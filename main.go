@@ -8,6 +8,13 @@ import (
 )
 
 var mainwin *ui.Window
+var uiname *ui.Entry
+var uiname2 *ui.Entry
+var uisn1 *ui.Entry
+var uisn2 *ui.Entry
+var uibd *ui.DateTimePicker
+var uied *ui.DateTimePicker
+var uidesc *ui.Entry
 
 func makeBasicControlsPage() ui.Control {
 	fullBox := ui.NewVerticalBox()
@@ -25,21 +32,33 @@ func makeBasicControlsPage() ui.Control {
 	entryForm.SetPadded(true)
 	group.SetChild(entryForm)
 
-	entryForm.Append("Nombre (*)", ui.NewEntry(), false)
-	entryForm.Append("Nombre 2", ui.NewEntry(), false)
-	entryForm.Append("Apellido (*)", ui.NewEntry(), false)
-	entryForm.Append("Apellido 2", ui.NewEntry(), false)
+	uiname = ui.NewEntry()
+	entryForm.Append("Nombre (*)", uiname, false)
+	uiname2 = ui.NewEntry()
+	entryForm.Append("Nombre 2", uiname2, false)
+	uisn1 = ui.NewEntry()
+	entryForm.Append("Apellido (*)", uisn1, false)
+	uisn2 = ui.NewEntry()
+	entryForm.Append("Apellido 2", uisn2, false)
 
 	fullBox.Append(ui.NewLabel("Fecha de nacimiento:"), false)
-	fullBox.Append(ui.NewDatePicker(), false)
+	uibd = ui.NewDatePicker()
+	fullBox.Append(uibd, false)
+
 	fullBox.Append(ui.NewLabel("Fecha de ingreso:"), false)
-	fullBox.Append(ui.NewDateTimePicker(), false)
+	uied = ui.NewDateTimePicker()
+	fullBox.Append(uied, false)
+
 	fullBox.Append(ui.NewLabel("Descripción del usuario:"), false)
-	fullBox.Append(ui.NewEntry(), true)
+	uidesc = ui.NewEntry()
+	fullBox.Append(uidesc, true)
 
 	saveBtn := ui.NewButton("GUARDAR")
 	saveBtn.OnClicked(func(*ui.Button) {
 		fmt.Println("Save button pressed!")
+		fmt.Println("Name: " + uiname.Text() + " " + uiname2.Text() + " " + uisn1.Text() + " " + uisn2.Text())
+		fmt.Println("Fecha de nacimiento: " + uibd.Time().Format("2006-01-02 15:04:05"))
+		fmt.Println("Fecha de ingreso: " + uied.Time().Format("2006-01-02 15:04:05"))
 	})
 	fullBox.Append(saveBtn, false)
 	return fullBox
