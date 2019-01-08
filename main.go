@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/andlabs/ui"
 	_ "github.com/andlabs/ui/winmanifest"
 )
@@ -35,7 +37,11 @@ func makeBasicControlsPage() ui.Control {
 	fullBox.Append(ui.NewLabel("Descripción del usuario:"), false)
 	fullBox.Append(ui.NewEntry(), true)
 
-	fullBox.Append(ui.NewButton("GUARDAR"), false)
+	saveBtn := ui.NewButton("GUARDAR")
+	saveBtn.OnClicked(func(*ui.Button) {
+		fmt.Println("Save button pressed!")
+	})
+	fullBox.Append(saveBtn, false)
 	return fullBox
 }
 
