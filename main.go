@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/dhinojosac/users-admin-ui/ush"
 
@@ -65,11 +64,13 @@ func makeBasicControlsPage() ui.Control {
 			//ui.MsgBoxError(mainwin,"Usuario no válido", "Debes agregar Nombre y Apellido del usuario.")
 			errwin := ui.NewWindow("Error Windows", 640, 480, true)
 			errwin.Show()
-		}
+		} else {
+			user := ush.CreateUser(uiname.Text(), uisn1.Text(), uisn2.Text())
+			user.SetDescription(uidesc.Text())
 
-		fmt.Println("Name: " + uiname.Text() + " " + uiname2.Text() + " " + uisn1.Text() + " " + uisn2.Text())
-		fmt.Println("Fecha de nacimiento: " + uibd.Time().Format("2006-01-02 15:04:05"))
-		fmt.Println("Fecha de ingreso: " + uied.Time().Format("2006-01-02 15:04:05"))
+			fmt.Println("Name: " + user.GetFullName())
+		}
+		//fmt.Println("Fecha de ingreso: " + uied.Time().Format("2006-01-02 15:04:05"))
 	})
 	fullBox.Append(saveBtn, false)
 	return fullBox
@@ -260,16 +261,17 @@ func setupUI() {
 }
 
 func main() {
-	user := ush.CreateUser("Diego", "Hinojosa", "Córdova")
-	desc := "Diagnosticado con protruciones lumbares en L3-L4 y L5-S1, sin compromiso nervioso."
-	user.SetDescription(desc)
-	user.SetAge(30)
+	/*
+		user := ush.CreateUser("Diego", "Hinojosa", "Córdova")
+		desc := "Diagnosticado con protruciones lumbares en L3-L4 y L5-S1, sin compromiso nervioso."
+		user.SetDescription(desc)
+		user.SetAge(30)
 
-	uname := user.GetFullName()
-	fmt.Println("Nombre: " + uname)
-	fmt.Println("Edad: " + strconv.Itoa(user.GetAge()))
-	fmt.Println("Descripción: " + user.GetDescription())
-	fmt.Println("Fecha ingreso: " + user.GetAgeStr())
-
+		uname := user.GetFullName()
+		fmt.Println("Nombre: " + uname)
+		fmt.Println("Edad: " + strconv.Itoa(user.GetAge()))
+		fmt.Println("Descripción: " + user.GetDescription())
+		fmt.Println("Fecha ingreso: " + user.GetAgeStr())
+	*/
 	ui.Main(setupUI)
 }
