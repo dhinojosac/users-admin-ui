@@ -8,6 +8,8 @@ import (
 )
 
 var mainwin *ui.Window
+var statusLbl *ui.Label
+
 var uiname *ui.Entry
 var uiname2 *ui.Entry
 var uisn1 *ui.Entry
@@ -56,12 +58,25 @@ func makeBasicControlsPage() ui.Control {
 	saveBtn := ui.NewButton("GUARDAR")
 	saveBtn.OnClicked(func(*ui.Button) {
 		fmt.Println("Save button pressed!")
+		if len(uiname.Text()) == 0 || len(uisn1.Text()) == 0 {
+			//ui.MsgBoxError(mainwin,"Usuario no válido", "Debes agregar Nombre y Apellido del usuario.")
+			errwin := ui.NewWindow("Error Windows", 640, 480, true)
+			errwin.Show()
+		}
+
 		fmt.Println("Name: " + uiname.Text() + " " + uiname2.Text() + " " + uisn1.Text() + " " + uisn2.Text())
 		fmt.Println("Fecha de nacimiento: " + uibd.Time().Format("2006-01-02 15:04:05"))
 		fmt.Println("Fecha de ingreso: " + uied.Time().Format("2006-01-02 15:04:05"))
 	})
 	fullBox.Append(saveBtn, false)
 	return fullBox
+}
+
+func makeUserList() ui.Control {
+	hbox := ui.NewHorizontalBox()
+	hbox.SetPadded(true)
+
+	return hbox
 }
 
 func makeNumbersPage() ui.Control {
@@ -225,15 +240,19 @@ func setupUI() {
 	mainwin.SetChild(tab)
 	mainwin.SetMargined(true)
 
-	tab.Append("Agregar uuario", makeBasicControlsPage())
+	tab.Append("Agregar usuario", makeBasicControlsPage())
 	tab.SetMargined(0, true)
+
+	tab.Append("Lista de usuarios", makeUserList())
+	tab.SetMargined(1, true)
 
 	//tab.Append("Numbers and Lists", makeNumbersPage())
 	//tab.SetMargined(1, true)
 
 	//tab.Append("Data Choosers", makeDataChoosersPage())
 	//tab.SetMargined(2, true)
-
+	//statusLbl := ui.NewLabel("[INFO] Programa desarrollado por DOHC 2019")
+	//mainwin.Append(statusLbl, false)
 	mainwin.Show()
 }
 
