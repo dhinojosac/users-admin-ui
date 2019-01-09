@@ -69,6 +69,7 @@ func makeBasicControlsPage() ui.Control {
 			user.SetDescription(uidesc.Text())
 
 			fmt.Println("Name: " + user.GetFullName())
+			fmt.Println("Desc: " + user.GetDescription())
 		}
 		//fmt.Println("Fecha de ingreso: " + uied.Time().Format("2006-01-02 15:04:05"))
 	})
