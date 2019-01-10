@@ -16,9 +16,26 @@ var uiname *ui.Entry
 var uiname2 *ui.Entry
 var uisn1 *ui.Entry
 var uisn2 *ui.Entry
-var uibd *ui.DateTimePicker
+var uidiag *ui.Combobox
+var uiage *ui.Entry
+
+//var uibd *ui.DateTimePicker
 var uied *ui.DateTimePicker
-var uidesc *ui.Entry
+var uidesc *ui.MultilineEntry
+
+func showNewWindows() {
+	errwin := ui.NewWindow("Alerta", 320, 160, true)
+	vbox := ui.NewVerticalBox()
+	acceptBtn := ui.NewButton("Aceptar")
+	errwin.OnClosing(func(*ui.Window) bool {
+		errwin.Hide()
+		return true
+	})
+	errwin.SetChild(vbox)
+	vbox.Append(ui.NewLabel("Realmente desea cerrar la aplicación?"), true)
+	vbox.Append(acceptBtn, true)
+	errwin.Show()
+}
 
 func makeBasicControlsPage() ui.Control {
 	fullBox := ui.NewVerticalBox()
@@ -45,187 +62,64 @@ func makeBasicControlsPage() ui.Control {
 	uisn2 = ui.NewEntry()
 	entryForm.Append("Apellido 2", uisn2, false)
 
-	fullBox.Append(ui.NewLabel("Fecha de nacimiento:"), false)
-	uibd = ui.NewDatePicker()
-	fullBox.Append(uibd, false)
+	diagAgeBox := ui.NewHorizontalBox()
+	diagAgeBox.SetPadded(false)
+	fullBox.Append(diagAgeBox, false)
+
+	uidiag = ui.NewCombobox()
+	uidiag.Append("Patología 1")
+	uidiag.Append("Patología 2")
+	uidiag.Append("Patología 3")
+	uidiag.Append("Patología 4")
+
+	diagAgeBox.Append(ui.NewLabel("Diagnóstico:  "), false)
+	diagAgeBox.Append(uidiag, true)
+	diagAgeBox.Append(ui.NewLabel("      "), false)
+	diagAgeBox.Append(ui.NewLabel("Edad:  "), false)
+	uiage := ui.NewEntry()
+	diagAgeBox.Append(uiage, true)
+
+	//fullBox.Append(ui.NewLabel("Fecha de nacimiento:"), false)
+	//uibd = ui.NewDatePicker()
+	//fullBox.Append(uibd, false)
 
 	fullBox.Append(ui.NewLabel("Fecha de ingreso:"), false)
 	uied = ui.NewDateTimePicker()
 	fullBox.Append(uied, false)
 
 	fullBox.Append(ui.NewLabel("Descripción del usuario:"), false)
-	uidesc = ui.NewEntry()
+	uidesc = ui.NewMultilineEntry()
 	fullBox.Append(uidesc, true)
 
 	saveBtn := ui.NewButton("GUARDAR")
 	saveBtn.OnClicked(func(*ui.Button) {
 		fmt.Println("Save button pressed!")
 		if len(uiname.Text()) == 0 || len(uisn1.Text()) == 0 {
-			//ui.MsgBoxError(mainwin,"Usuario no válido", "Debes agregar Nombre y Apellido del usuario.")
-			errwin := ui.NewWindow("Error Windows", 640, 480, true)
-			errwin.Show()
+			ui.MsgBoxError(mainwin, "Usuario no válido", "Debes agregar Nombre y Apellido del usuario.")
+			/*
+				//test new windows
+				showNewWindows()
+			*/
 		} else {
 			user := ush.CreateUser(uiname.Text(), uisn1.Text(), uisn2.Text())
 			user.SetDescription(uidesc.Text())
-
+			user.SetAge(uiage.Text())
 			fmt.Println("Name: " + user.GetFullName())
+			fmt.Println("Edad: " + user.GetAge())
+			fmt.Println("Diag: " + user.GetDiagnostic())
 			fmt.Println("Desc: " + user.GetDescription())
 		}
 		//fmt.Println("Fecha de ingreso: " + uied.Time().Format("2006-01-02 15:04:05"))
 	})
 	fullBox.Append(saveBtn, false)
+	statusLbl = ui.NewLabel("[INFO] Programa desarrollado por dhinojosac 2019 para la Chanchita <3")
+	fullBox.Append(statusLbl, false)
 	return fullBox
 }
 
 func makeUserList() ui.Control {
 	hbox := ui.NewHorizontalBox()
 	hbox.SetPadded(true)
-
-	return hbox
-}
-
-func makeNumbersPage() ui.Control {
-	hbox := ui.NewHorizontalBox()
-	hbox.SetPadded(true)
-
-	group := ui.NewGroup("Numbers")
-	group.SetMargined(true)
-	hbox.Append(group, true)
-
-	vbox := ui.NewVerticalBox()
-	vbox.SetPadded(true)
-	group.SetChild(vbox)
-
-	spinbox := ui.NewSpinbox(0, 100)
-	slider := ui.NewSlider(0, 100)
-	pbar := ui.NewProgressBar()
-	spinbox.OnChanged(func(*ui.Spinbox) {
-		slider.SetValue(spinbox.Value())
-		pbar.SetValue(spinbox.Value())
-	})
-	slider.OnChanged(func(*ui.Slider) {
-		spinbox.SetValue(slider.Value())
-		pbar.SetValue(slider.Value())
-	})
-	vbox.Append(spinbox, false)
-	vbox.Append(slider, false)
-	vbox.Append(pbar, false)
-
-	ip := ui.NewProgressBar()
-	ip.SetValue(-1)
-	vbox.Append(ip, false)
-
-	group = ui.NewGroup("Lists")
-	group.SetMargined(true)
-	hbox.Append(group, true)
-
-	vbox = ui.NewVerticalBox()
-	vbox.SetPadded(true)
-	group.SetChild(vbox)
-
-	cbox := ui.NewCombobox()
-	cbox.Append("Combobox Item 1")
-	cbox.Append("Combobox Item 2")
-	cbox.Append("Combobox Item 3")
-	vbox.Append(cbox, false)
-
-	ecbox := ui.NewEditableCombobox()
-	ecbox.Append("Editable Item 1")
-	ecbox.Append("Editable Item 2")
-	ecbox.Append("Editable Item 3")
-	vbox.Append(ecbox, false)
-
-	rb := ui.NewRadioButtons()
-	rb.Append("Radio Button 1")
-	rb.Append("Radio Button 2")
-	rb.Append("Radio Button 3")
-	vbox.Append(rb, false)
-
-	return hbox
-}
-
-func makeDataChoosersPage() ui.Control {
-	hbox := ui.NewHorizontalBox()
-	hbox.SetPadded(true)
-
-	vbox := ui.NewVerticalBox()
-	vbox.SetPadded(true)
-	hbox.Append(vbox, false)
-
-	vbox.Append(ui.NewDatePicker(), false)
-	vbox.Append(ui.NewTimePicker(), false)
-	vbox.Append(ui.NewDateTimePicker(), false)
-	vbox.Append(ui.NewFontButton(), false)
-	vbox.Append(ui.NewColorButton(), false)
-
-	hbox.Append(ui.NewVerticalSeparator(), false)
-
-	vbox = ui.NewVerticalBox()
-	vbox.SetPadded(true)
-	hbox.Append(vbox, true)
-
-	grid := ui.NewGrid()
-	grid.SetPadded(true)
-	vbox.Append(grid, false)
-
-	button := ui.NewButton("Open File")
-	entry := ui.NewEntry()
-	entry.SetReadOnly(true)
-	button.OnClicked(func(*ui.Button) {
-		filename := ui.OpenFile(mainwin)
-		if filename == "" {
-			filename = "(cancelled)"
-		}
-		entry.SetText(filename)
-	})
-	grid.Append(button,
-		0, 0, 1, 1,
-		false, ui.AlignFill, false, ui.AlignFill)
-	grid.Append(entry,
-		1, 0, 1, 1,
-		true, ui.AlignFill, false, ui.AlignFill)
-
-	button = ui.NewButton("Save File")
-	entry2 := ui.NewEntry()
-	entry2.SetReadOnly(true)
-	button.OnClicked(func(*ui.Button) {
-		filename := ui.SaveFile(mainwin)
-		if filename == "" {
-			filename = "(cancelled)"
-		}
-		entry2.SetText(filename)
-	})
-	grid.Append(button,
-		0, 1, 1, 1,
-		false, ui.AlignFill, false, ui.AlignFill)
-	grid.Append(entry2,
-		1, 1, 1, 1,
-		true, ui.AlignFill, false, ui.AlignFill)
-
-	msggrid := ui.NewGrid()
-	msggrid.SetPadded(true)
-	grid.Append(msggrid,
-		0, 2, 2, 1,
-		false, ui.AlignCenter, false, ui.AlignStart)
-
-	button = ui.NewButton("Message Box")
-	button.OnClicked(func(*ui.Button) {
-		ui.MsgBox(mainwin,
-			"This is a normal message box.",
-			"More detailed information can be shown here.")
-	})
-	msggrid.Append(button,
-		0, 0, 1, 1,
-		false, ui.AlignFill, false, ui.AlignFill)
-	button = ui.NewButton("Error Box")
-	button.OnClicked(func(*ui.Button) {
-		ui.MsgBoxError(mainwin,
-			"This message box describes an error.",
-			"More detailed information can be shown here.")
-	})
-	msggrid.Append(button,
-		1, 0, 1, 1,
-		false, ui.AlignFill, false, ui.AlignFill)
 
 	return hbox
 }
@@ -251,28 +145,9 @@ func setupUI() {
 	tab.Append("Lista de usuarios", makeUserList())
 	tab.SetMargined(1, true)
 
-	//tab.Append("Numbers and Lists", makeNumbersPage())
-	//tab.SetMargined(1, true)
-
-	//tab.Append("Data Choosers", makeDataChoosersPage())
-	//tab.SetMargined(2, true)
-	//statusLbl := ui.NewLabel("[INFO] Programa desarrollado por DOHC 2019")
-	//mainwin.Append(statusLbl, false)
 	mainwin.Show()
 }
 
 func main() {
-	/*
-		user := ush.CreateUser("Diego", "Hinojosa", "Córdova")
-		desc := "Diagnosticado con protruciones lumbares en L3-L4 y L5-S1, sin compromiso nervioso."
-		user.SetDescription(desc)
-		user.SetAge(30)
-
-		uname := user.GetFullName()
-		fmt.Println("Nombre: " + uname)
-		fmt.Println("Edad: " + strconv.Itoa(user.GetAge()))
-		fmt.Println("Descripción: " + user.GetDescription())
-		fmt.Println("Fecha ingreso: " + user.GetAgeStr())
-	*/
 	ui.Main(setupUI)
 }

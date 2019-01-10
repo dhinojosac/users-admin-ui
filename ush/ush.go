@@ -10,6 +10,7 @@ type User struct {
 	surname1    string
 	surname2    string
 	age         int
+	diagnostic  string
 	birthday    time.Time
 	description string
 	entryDate   time.Time
@@ -30,6 +31,14 @@ func (u *User) SetDescription(d string) {
 
 func (u *User) GetDescription() string {
 	return u.description
+}
+
+func (u *User) SetDiagnostic(d string) {
+	u.diagnostic = d
+}
+
+func (u *User) GetDiagnostic() string {
+	return u.diagnostic
 }
 
 func (u *User) SetName(n string) {
