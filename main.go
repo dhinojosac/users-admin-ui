@@ -68,25 +68,19 @@ func makeBasicControlsPage() ui.Control {
 	fullBox.Append(diagAgeBox, false)
 
 	uidiag = ui.NewCombobox()
-	uidiag.Append("Patología 1")
-	uidiag.Append("Patología 2")
-	uidiag.Append("Patología 3")
-	uidiag.Append("Patología 4")
+	for _, value := range ush.FisconditionMap {
+		uidiag.Append(value)
+	}
 
-	diagAgeBox.Append(ui.NewLabel("Diagnóstico:  "), false)
-	diagAgeBox.Append(uidiag, true)
-	diagAgeBox.Append(ui.NewLabel("      "), false)
+	fullBox.Append(ui.NewLabel("Diagnóstico:  "), false)
+	fullBox.Append(uidiag, true)
 	diagAgeBox.Append(ui.NewLabel("Edad:  "), false)
 	uiage := ui.NewEntry()
-	diagAgeBox.Append(uiage, true)
-
-	//fullBox.Append(ui.NewLabel("Fecha de nacimiento:"), false)
-	//uibd = ui.NewDatePicker()
-	//fullBox.Append(uibd, false)
-
-	fullBox.Append(ui.NewLabel("Fecha de ingreso:"), false)
+	diagAgeBox.Append(uiage, false)
+	diagAgeBox.Append(ui.NewLabel("    "), false)
+	diagAgeBox.Append(ui.NewLabel(" Fecha de ingreso: "), false)
 	uied = ui.NewDateTimePicker()
-	fullBox.Append(uied, false)
+	diagAgeBox.Append(uied, true)
 
 	fullBox.Append(ui.NewLabel("Descripción del usuario:"), false)
 	uidesc = ui.NewMultilineEntry()
@@ -104,13 +98,17 @@ func makeBasicControlsPage() ui.Control {
 		} else {
 			user := ush.CreateUser(uiname.Text(), uisn1.Text(), uisn2.Text())
 			user.SetDescription(uidesc.Text())
+			user.SetDiagnostic(uidiag.Selected())
 			ageint, err := strconv.Atoi(uiage.Text())
 			if err != nil {
 
 			}
 			user.SetAge(ageint)
+
+			//To check data user
 			fmt.Println("Name: " + user.GetFullName())
-			fmt.Println("Edad: " + user.GetAge())
+			fmt.Printf("Edad:%d\n", user.GetAge())
+			fmt.Println("Edad:" + user.GetAgeStr())
 			fmt.Println("Diag: " + user.GetDiagnostic())
 			fmt.Println("Desc: " + user.GetDescription())
 		}

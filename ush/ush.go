@@ -5,16 +5,46 @@ import (
 	"time"
 )
 
+var fisconditionMap = map[int]string{
+0: "SÍNDROME DOLOROSO DE ORIGEN TRAUMÁTICO"
+1 : "SÍNDROME DOLOROSO DE ORIGEN NO TRAUMÁTICO"
+2: "ARTROSIS LEVE Y MODERADA DE RODILLA Y CADERA"
+3 : "SECUELA DE ACCIDENTE CEREBRO VASCULAR (ACV)"
+4: "SECUELAS DE TRAUMATISMO ENCEFALO CRANEANO (TEC)"
+5 : "SECUELA DE TRAUMATISMO RAQUIMEDULAR (TRM)"
+6: "SECUELA QUEMADURA"
+7: "ENFERMEDAD DE PARKINSON"
+8 : "OTRO DÉFICIT SECUNDARIO CON COMPROMISO NEUROMUSCULAR EN MENOR DE 20 AÑOS CONGÉNITO"
+9 : "OTRO DÉFICIT SECUNDARIO CON COMPROMISO NEUROMUSCULAR EN MENOR DE 20 AÑOS ADQUIRIDO"
+10 : "OTRO DÉFICIT SECUNDARIO CON COMPROMISO NEUROMUSCULAR  EN MAYOR DE 20 AÑOS"
+11 : "AMPUTACIÓN POR PIE DIABETICO"
+12 : "OTROS"
+}
+
+var visconditionMap = map[int]string{
+	0: "CONGÉNITO"
+	1 : "ADQUIRIDO"
+	2: "OTROS"
+
+}
+
+var audconditionMap = map[int]string{
+		0: "CONGÉNITO"
+		1 : "ADQUIRIDO"
+		2: "OTROS"
+}
+
 type User struct {
-	name        string
-	name2       string
-	surname1    string
-	surname2    string
-	age         int
-	diagnostic  string
-	birthday    time.Time
-	description string
-	entryDate   time.Time
+	name         string
+	name2        string
+	surname1     string
+	surname2     string
+	age          int
+	fiscondition int
+	viscondition int
+	audcondition int
+	description  string
+	entryDate    time.Time
 }
 
 func CreateUser(n, s1, s2 string) *User {
@@ -34,12 +64,12 @@ func (u *User) GetDescription() string {
 	return u.description
 }
 
-func (u *User) SetDiagnostic(d string) {
-	u.diagnostic = d
+func (u *User) SetFisCondition(d string) {
+	u.fiscondition = d
 }
 
-func (u *User) GetDiagnostic() string {
-	return u.diagnostic
+func (u *User) GetFisCondition() string {
+	return u.fiscondition
 }
 
 func (u *User) SetName(n string) {
