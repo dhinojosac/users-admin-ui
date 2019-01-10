@@ -17,7 +17,9 @@ var uiname *ui.Entry
 var uiname2 *ui.Entry
 var uisn1 *ui.Entry
 var uisn2 *ui.Entry
-var uidiag *ui.Combobox
+var uifiscon *ui.Combobox
+var uiviscon *ui.Combobox
+var uiaudcon *ui.Combobox
 var uiage *ui.Entry
 
 //var uibd *ui.DateTimePicker
@@ -66,25 +68,37 @@ func makeBasicControlsPage() ui.Control {
 	diagAgeBox := ui.NewHorizontalBox()
 	diagAgeBox.SetPadded(false)
 	fullBox.Append(diagAgeBox, false)
-
-	uidiag = ui.NewCombobox()
-	for _, value := range ush.FisconditionMap {
-		uidiag.Append(value)
-	}
-
-	fullBox.Append(ui.NewLabel("Diagnóstico:  "), false)
-	fullBox.Append(uidiag, true)
 	diagAgeBox.Append(ui.NewLabel("Edad:  "), false)
 	uiage := ui.NewEntry()
 	diagAgeBox.Append(uiage, false)
 	diagAgeBox.Append(ui.NewLabel("    "), false)
 	diagAgeBox.Append(ui.NewLabel(" Fecha de ingreso: "), false)
 	uied = ui.NewDateTimePicker()
-	diagAgeBox.Append(uied, true)
+	diagAgeBox.Append(uied, false)
+
+	uifiscon = ui.NewCombobox()
+	for _, value := range ush.FisconditionMap {
+		uifiscon.Append(value)
+	}
+	uiviscon = ui.NewCombobox()
+	for _, value := range ush.VisconditionMap {
+		uiviscon.Append(value)
+	}
+	uiaudcon = ui.NewCombobox()
+	for _, value := range ush.AudconditionMap {
+		uiaudcon.Append(value)
+	}
+
+	fullBox.Append(ui.NewLabel("Condición física:  "), true)
+	fullBox.Append(uifiscon, false)
+	fullBox.Append(ui.NewLabel("Condición sensorial visual:  "), true)
+	fullBox.Append(uiviscon, false)
+	fullBox.Append(ui.NewLabel("Condición sensorial auditivo:  "), true)
+	fullBox.Append(uiaudcon, false)
 
 	fullBox.Append(ui.NewLabel("Descripción del usuario:"), false)
 	uidesc = ui.NewMultilineEntry()
-	fullBox.Append(uidesc, true)
+	fullBox.Append(uidesc, false)
 
 	saveBtn := ui.NewButton("GUARDAR")
 	saveBtn.OnClicked(func(*ui.Button) {
@@ -98,7 +112,7 @@ func makeBasicControlsPage() ui.Control {
 		} else {
 			user := ush.CreateUser(uiname.Text(), uisn1.Text(), uisn2.Text())
 			user.SetDescription(uidesc.Text())
-			user.SetDiagnostic(uidiag.Selected())
+			user.SetFisCondition(uifiscon.Selected())
 			ageint, err := strconv.Atoi(uiage.Text())
 			if err != nil {
 
@@ -109,7 +123,7 @@ func makeBasicControlsPage() ui.Control {
 			fmt.Println("Name: " + user.GetFullName())
 			fmt.Printf("Edad:%d\n", user.GetAge())
 			fmt.Println("Edad:" + user.GetAgeStr())
-			fmt.Println("Diag: " + user.GetDiagnostic())
+			fmt.Println("Diag: " + user.GetFisConditionStr())
 			fmt.Println("Desc: " + user.GetDescription())
 		}
 		//fmt.Println("Fecha de ingreso: " + uied.Time().Format("2006-01-02 15:04:05"))
@@ -128,7 +142,7 @@ func makeUserList() ui.Control {
 }
 
 func setupUI() {
-	mainwin = ui.NewWindow("Registro de usuarios v0.1", 640, 480, true)
+	mainwin = ui.NewWindow("Registro de usuarios v0.1", 640, 500, true)
 	mainwin.OnClosing(func(*ui.Window) bool {
 		ui.Quit()
 		return true
