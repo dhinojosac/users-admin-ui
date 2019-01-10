@@ -23,7 +23,7 @@ var FisconditionMap = map[int]string{
 
 var VisconditionMap = map[int]string{
 	0: "CONGÉNITO",
-	1 : "ADQUIRIDO",
+	1 : "ADQUIRIDO" ,
 	2: "OTROS"
 
 }
