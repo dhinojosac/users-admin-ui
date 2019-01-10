@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/dhinojosac/users-admin-ui/ush"
 
@@ -103,7 +104,11 @@ func makeBasicControlsPage() ui.Control {
 		} else {
 			user := ush.CreateUser(uiname.Text(), uisn1.Text(), uisn2.Text())
 			user.SetDescription(uidesc.Text())
-			user.SetAge(uiage.Text())
+			ageint, err := strconv.Atoi(uiage.Text())
+			if err != nil {
+
+			}
+			user.SetAge(ageint)
 			fmt.Println("Name: " + user.GetFullName())
 			fmt.Println("Edad: " + user.GetAge())
 			fmt.Println("Diag: " + user.GetDiagnostic())

@@ -1,6 +1,7 @@
 package ush
 
 import (
+	"strconv"
 	"time"
 )
 
@@ -62,5 +63,5 @@ func (u *User) GetAge() int {
 }
 
 func (u *User) GetAgeStr() string {
-	return u.entryDate.Format("2006-01-02 15:04:05")
+	return strconv.Itoa(u.age)
 }
