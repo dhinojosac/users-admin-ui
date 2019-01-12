@@ -46,9 +46,10 @@ type User struct {
 	entryDate    time.Time
 }
 
-func CreateUser(n, s1, s2 string) *User {
+func CreateUser(n1, n2, s1, s2 string) *User {
 	nu := new(User)
-	nu.name = n
+	nu.name = n1
+	nu.name2 = n2
 	nu.surname1 = s1
 	nu.surname2 = s2
 	nu.entryDate = time.Now()
@@ -63,12 +64,12 @@ func (u *User) GetDescription() string {
 	return u.description
 }
 
-func (u *User) SetFisCondition(d string) {
+func (u *User) SetFisCondition(d int) {
 	u.fiscondition = d
 }
 
 func (u *User) GetFisCondition() string {
-	return u.fiscondition
+	return FisconditionMap[u.fiscondition]
 }
 
 func (u *User) SetName(n string) {

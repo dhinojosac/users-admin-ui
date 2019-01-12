@@ -110,7 +110,7 @@ func makeBasicControlsPage() ui.Control {
 				showNewWindows()
 			*/
 		} else {
-			user := ush.CreateUser(uiname.Text(), uisn1.Text(), uisn2.Text())
+			user := ush.CreateUser(uiname.Text(), uiname2.Text(), uisn1.Text(), uisn2.Text())
 			user.SetDescription(uidesc.Text())
 			user.SetFisCondition(uifiscon.Selected())
 			ageint, err := strconv.Atoi(uiage.Text())
