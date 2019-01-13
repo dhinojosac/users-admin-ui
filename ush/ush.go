@@ -51,186 +51,186 @@ var PrevisionMap = map[int]string{
 
 //User type
 type User struct {
-	rut          string `json: "rut"`
-	name         string `json: "name"`
-	name2        string `json: "name2"`
-	surname1     string `json: "surname"`
-	surname2     string `json: "surname2"`
-	age          int
-	gender       int
-	fiscondition int
-	viscondition int
-	audcondition int
-	prevision    int
-	contact      string
-	description  string
-	entryDate    time.Time
+	Rut          string `json:"rut"`
+	Name         string `json:"name"`
+	Name2        string `json:"name2"`
+	Surname1     string `json:"surname"`
+	Surname2     string `json:"surname2"`
+	Age          int
+	Gender       int
+	Fiscondition int
+	Viscondition int
+	Audcondition int
+	Prevition    int
+	Contact      string
+	Description  string
+	EntryDate    time.Time
 }
 
 func CreateUser(n1, n2, s1, s2 string) *User {
 	nu := new(User)
-	nu.name = n1
-	nu.name2 = n2
-	nu.surname1 = s1
-	nu.surname2 = s2
-	nu.entryDate = time.Now()
+	nu.Name = n1
+	nu.Name2 = n2
+	nu.Surname1 = s1
+	nu.Surname2 = s2
+	nu.EntryDate = time.Now()
 	return nu
 }
 
 //Rut
 func (u *User) SetRut(d string) {
-	u.rut = d
+	u.Rut = d
 }
 
 func (u *User) GetRut() string {
-	return u.rut
+	return u.Rut
 }
 
 //Name
 func (u *User) SetName(d string) {
-	u.name = d
+	u.Name = d
 }
 
 func (u *User) GetName() string {
-	return u.name
+	return u.Name
 }
 
-//Second name
+//Second Name
 func (u *User) SetName2(d string) {
-	u.name2 = d
+	u.Name2 = d
 }
 
 func (u *User) GetName2() string {
-	return u.name2
+	return u.Name2
 }
 
-//Surname
-func (u *User) SetSurname(d string) {
-	u.surname1 = d
+//SurName
+func (u *User) SetSurName(d string) {
+	u.Surname1 = d
 }
 
-func (u *User) GetSurname() string {
-	return u.surname1
+func (u *User) GetSurName() string {
+	return u.Surname1
 }
 
-//Second surname
-func (u *User) SetSurname2(d string) {
-	u.surname2 = d
+//Second Surname
+func (u *User) SetSurName2(d string) {
+	u.Surname2 = d
 }
 
-func (u *User) GetSurname2() string {
-	return u.surname2
+func (u *User) GetSurName2() string {
+	return u.Surname2
 }
 
 //Age
 func (u *User) SetAge(a int) {
-	u.age = a
+	u.Age = a
 }
 
 func (u *User) GetAge() int {
-	return u.age
+	return u.Age
 }
 
 func (u *User) GetAgeStr() string {
-	return strconv.Itoa(u.age)
+	return strconv.Itoa(u.Age)
 }
 
 //Gender
 func (u *User) SetGender(a int) {
-	u.gender = a
+	u.Gender = a
 }
 
 func (u *User) GetGender() int {
-	return u.gender
+	return u.Gender
 }
 
 func (u *User) GetGenderStr() string {
-	return GenderMap[u.gender]
+	return GenderMap[u.Gender]
 }
 
 //Fisical condition
 func (u *User) SetFisCondition(d int) {
-	u.fiscondition = d
+	u.Fiscondition = d
 }
 
 func (u *User) GetFisCondition() int {
-	return u.fiscondition
+	return u.Fiscondition
 }
 
 func (u *User) GetFisConditionStr() string {
-	return FisconditionMap[u.fiscondition]
+	return FisconditionMap[u.Fiscondition]
 }
 
 //Visual condition
 func (u *User) SetVisualCondition(d int) {
-	u.viscondition = d
+	u.Viscondition = d
 }
 
 func (u *User) GetVisualCondition() int {
-	return u.viscondition
+	return u.Viscondition
 }
 
 func (u *User) GetVisualConditionStr() string {
-	return VisconditionMap[u.viscondition]
+	return VisconditionMap[u.Viscondition]
 }
 
 //Auditive condition
 func (u *User) SetAuditiveCondition(d int) {
-	u.audcondition = d
+	u.Audcondition = d
 }
 
 func (u *User) GetAuditiveCondition() int {
-	return u.audcondition
+	return u.Audcondition
 }
 
 func (u *User) GetAuditiveConditionStr() string {
-	return AudconditionMap[u.audcondition]
+	return AudconditionMap[u.Audcondition]
 }
 
 //Prevision
 func (u *User) SetPrevision(d int) {
-	u.prevision = d
+	u.Prevition = d
 }
 
 func (u *User) GetPrevision() int {
-	return u.prevision
+	return u.Prevition
 }
 
 func (u *User) GetPrevisionStr() string {
-	return PrevisionMap[u.prevision]
+	return PrevisionMap[u.Prevition]
 }
 
 //Contact
 func (u *User) SetContact(d string) {
-	u.contact = d
+	u.Contact = d
 }
 
 func (u *User) GetContact() string {
-	return u.contact
+	return u.Contact
 }
 
 //Description
 func (u *User) SetDescription(d string) {
-	u.description = d
+	u.Description = d
 }
 
 func (u *User) GetDescription() string {
-	return u.description
+	return u.Description
 }
 
 func (u *User) GetFullName() string {
-	return u.name + " " + u.name2 + " " + u.surname1 + " " + u.surname2
+	return u.Name + " " + u.Name2 + " " + u.Surname1 + " " + u.Surname2
 }
 
 //Entry time
 func (u *User) SetEntryDate(t time.Time) {
-	u.entryDate = t
+	u.EntryDate = t
 }
 
 func (u *User) GetEntryDate() time.Time {
-	return u.entryDate
+	return u.EntryDate
 }
 
 func (u *User) GetEntryDateStr() string {
-	return u.entryDate.Format("2006-01-02 15:04:05")
+	return u.EntryDate.Format("2006-01-02 15:04:05")
 }
