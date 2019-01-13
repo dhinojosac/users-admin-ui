@@ -49,12 +49,13 @@ var PrevisionMap = map[int]string{
 	4: "PRAIS",
 }
 
+//User type
 type User struct {
-	rut          string
-	name         string
-	name2        string
-	surname1     string
-	surname2     string
+	rut          string `json: "rut"`
+	name         string `json: "name"`
+	name2        string `json: "name2"`
+	surname1     string `json: "surname"`
+	surname2     string `json: "surname2"`
 	age          int
 	gender       int
 	fiscondition int

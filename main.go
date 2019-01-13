@@ -1,13 +1,17 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"strconv"
+	"time"
 
 	"github.com/dhinojosac/users-admin-ui/ush"
 
 	"github.com/andlabs/ui"
 	_ "github.com/andlabs/ui/winmanifest"
+	"github.com/boltdb/bolt"
 )
 
 var mainwin *ui.Window
@@ -27,6 +31,27 @@ var uiprev *ui.Combobox
 var uicont *ui.Entry
 var uied *ui.DateTimePicker
 var uidesc *ui.MultilineEntry
+
+var db *bolt.DB
+
+func setupDB() (*bolt.DB, error) {
+	db, err := bolt.Open("test.db", 0600, nil)
+	if err != nil {
+		return nil, fmt.Errorf("could not open db, %v", err)
+	}
+	err = db.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte("USERS"))
+		if err != nil {
+			return fmt.Errorf("could not create root bucket: %v", err)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("could not set up buckets, %v", err)
+	}
+	fmt.Println("DB Setup Done")
+	return db, nil
+}
 
 func showNewWindows() {
 	errwin := ui.NewWindow("Alerta", 320, 160, true)
@@ -79,17 +104,17 @@ func makeBasicControlsPage() ui.Control {
 	uisex.Append("Hombre")
 	uisex.Append("Mujer")
 	diagAgeBox.Append(uisex, false)
-	diagAgeBox.Append(ui.NewLabel("Edad:"), false)
+	diagAgeBox.Append(ui.NewLabel("  Edad"), false)
 	uiage := ui.NewEntry()
 	diagAgeBox.Append(uiage, false)
 
 	contactBox := ui.NewHorizontalBox()
 	contactBox.SetPadded(true)
 	fullBox.Append(contactBox, false)
-	contactBox.Append(ui.NewLabel("Contacto:"), false)
+	contactBox.Append(ui.NewLabel("Contacto"), false)
 	uicont = ui.NewEntry()
 	contactBox.Append(uicont, false)
-	contactBox.Append(ui.NewLabel("Previsión:"), false)
+	contactBox.Append(ui.NewLabel("Previsión"), false)
 	uiprev = ui.NewCombobox()
 	//Fill prevision
 	for i := 0; i < len(ush.PrevisionMap); i++ {
@@ -115,14 +140,14 @@ func makeBasicControlsPage() ui.Control {
 		uiaudcon.Append(ush.AudconditionMap[i])
 	}
 
-	fullBox.Append(ui.NewLabel("Condición física:  "), false)
+	fullBox.Append(ui.NewLabel("Condición física  "), false)
 	fullBox.Append(uifiscon, false)
-	fullBox.Append(ui.NewLabel("Condición sensorial visual:  "), false)
+	fullBox.Append(ui.NewLabel("Condición sensorial visual  "), false)
 	fullBox.Append(uiviscon, false)
-	fullBox.Append(ui.NewLabel("Condición sensorial auditivo:  "), false)
+	fullBox.Append(ui.NewLabel("Condición sensorial auditivo  "), false)
 	fullBox.Append(uiaudcon, false)
 
-	fullBox.Append(ui.NewLabel("Descripción del usuario:"), false)
+	fullBox.Append(ui.NewLabel("Descripción del usuario"), false)
 	uidesc = ui.NewMultilineEntry()
 	fullBox.Append(uidesc, true)
 
@@ -145,6 +170,11 @@ func makeBasicControlsPage() ui.Control {
 			}
 			user.SetAge(ageint)
 
+			err = addUserDB(db, user.GetRut(), user.GetName(), user.GetSurname(), time.Now())
+			if err != nil {
+				log.Fatal(err)
+			}
+
 			//To check data user
 			fmt.Println("Name: " + user.GetFullName())
 			fmt.Printf("Edad:%d\n", user.GetAge())
@@ -155,7 +185,7 @@ func makeBasicControlsPage() ui.Control {
 		//fmt.Println("Fecha de ingreso: " + uied.Time().Format("2006-01-02 15:04:05"))
 	})
 	fullBox.Append(saveBtn, false)
-	statusLbl = ui.NewLabel("[INFO] Programa desarrollado por dhinojosac 2019 para la Chanchita <3")
+	statusLbl = ui.NewLabel("[INFO] Programa en dasarrollo. dhinojosac 2019")
 	fullBox.Append(statusLbl, false)
 	return fullBox
 }
@@ -167,7 +197,35 @@ func makeUserList() ui.Control {
 	return hbox
 }
 
+func addUserDB(db *bolt.DB, r, n, sn string, date time.Time) error {
+	entry := ush.User{rut: r, name: n, surname: sn}
+	entryBytes, err := json.Marshal(entry)
+	if err != nil {
+		return fmt.Errorf("could not marshal entry json: %v", err)
+	}
+	err = db.Update(func(tx *bolt.Tx) error {
+		err := tx.Bucket([]byte("DB")).Bucket([]byte("USERS")).Put([]byte(date.Format(time.RFC3339)), entryBytes)
+		if err != nil {
+			return fmt.Errorf("could not insert entry: %v", err)
+		}
+
+		return nil
+	})
+	fmt.Println("Added Entry")
+	return err
+}
+
 func setupUI() {
+
+	//Check database
+	var err error
+	db, err = setupDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	//Create main windows
 	mainwin = ui.NewWindow("Registro de usuarios v0.1", 640, 500, true)
 	mainwin.OnClosing(func(*ui.Window) bool {
 		ui.Quit()
