@@ -91,25 +91,16 @@ func makeBasicControlsPage() ui.Control {
 	contactBox.Append(uicont, false)
 	contactBox.Append(ui.NewLabel("Previsión:"), false)
 	uiprev = ui.NewCombobox()
+	//Fill prevision
 	for i := 0; i < len(ush.PrevisionMap); i++ {
-		uifiscon.Append(ush.PrevisionMap[i])
+		uiprev.Append(ush.PrevisionMap[i])
 	}
 	contactBox.Append(uiprev, false)
-
-	/*
-		diagAgeBox.Append(ui.NewLabel("Edad:"), true)
-		uiage := ui.NewEntry()
-		diagAgeBox.Append(uiage, false)
-		diagAgeBox.Append(ui.NewLabel("Ingreso: "), true)
-		uied = ui.NewDateTimePicker()
-		diagAgeBox.Append(uied, false)
-	*/
 
 	//Fill combobox with fisical condition
 	uifiscon = ui.NewCombobox()
 	for i := 0; i < len(ush.FisconditionMap); i++ {
 		uifiscon.Append(ush.FisconditionMap[i])
-		fmt.Println("Fis condition index: ", i)
 	}
 
 	//Fill combobox with visual condition
@@ -133,7 +124,7 @@ func makeBasicControlsPage() ui.Control {
 
 	fullBox.Append(ui.NewLabel("Descripción del usuario:"), false)
 	uidesc = ui.NewMultilineEntry()
-	fullBox.Append(uidesc, false)
+	fullBox.Append(uidesc, true)
 
 	saveBtn := ui.NewButton("GUARDAR")
 	saveBtn.OnClicked(func(*ui.Button) {

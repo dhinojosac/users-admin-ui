@@ -19,18 +19,21 @@ var FisconditionMap = map[int]string{
 	10: "OTRO DÉFICIT SECUNDARIO CON COMPROMISO NEUROMUSCULAR  EN MAYOR DE 20 AÑOS",
 	11: "AMPUTACIÓN POR PIE DIABETICO",
 	12: "OTROS",
+	13: "NO APLICA",
 }
 
 var VisconditionMap = map[int]string{
 	0: "CONGÉNITO",
 	1: "ADQUIRIDO",
 	2: "OTROS",
+	3: "NO APLICA",
 }
 
 var AudconditionMap = map[int]string{
 	0: "CONGÉNITO",
 	1: "ADQUIRIDO",
 	2: "OTROS",
+	3: "NO APLICA",
 }
 
 var GenderMap = map[int]string{
